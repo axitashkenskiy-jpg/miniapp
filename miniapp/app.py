@@ -5,11 +5,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return """
-    <h1>🔥 Admin Dashboard</h1>
-    <p>Bot ishlayapti!</p>
-    """
+    return "🔥 Mini App ishlayapti!"
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 3000))
+    port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
