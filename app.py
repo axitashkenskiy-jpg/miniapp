@@ -1,22 +1,24 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request
+import requests
 import os
 
 app = Flask(__name__)
 
-# test data (keyin bot bilan ulaymiz)
-DATA = {
-    "users": 120,
-    "admins": 3,
-    "auto": True
-}
+# 🔥 SENING NGROK LINKING
+BOT_URL = "https://ruby-plantlike-unreligiously.ngrok-free.dev"
 
 @app.route("/")
 def home():
+    try:
+        data = requests.get(BOT_URL + "/api/stats").json()
+    except:
+        data = {"users": "X", "admins": "X", "auto": False}
+
     return f"""
     <h2>📊 Dashboard</h2>
-    <p>👥 Users: {DATA['users']}</p>
-    <p>👑 Admins: {DATA['admins']}</p>
-    <p>🤖 Auto: {"ON" if DATA['auto'] else "OFF"}</p>
+    <p>👥 Users: {data['users']}</p>
+    <p>👑 Admins: {data['admins']}</p>
+    <p>🤖 Auto: {"ON" if data['auto'] else "OFF"}</p>
 
     <button onclick="toggle()">Toggle Auto</button>
 
@@ -30,7 +32,11 @@ def home():
 
 @app.route("/toggle", methods=["POST"])
 def toggle():
-    DATA["auto"] = not DATA["auto"]
+    try:
+        requests.post(BOT_URL + "/api/toggle")
+    except:
+        pass
     return "ok"
 
-app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
