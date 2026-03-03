@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 
 app = Flask(__name__)
 
@@ -7,7 +8,8 @@ def home():
     return """
     <h1>🔥 Admin Dashboard</h1>
     <p>Bot ishlayapti!</p>
-    <button onclick="alert('Auto ON/OFF')">Auto Toggle</button>
     """
-    
-app.run(host="0.0.0.0", port=3000)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 3000))
+    app.run(host="0.0.0.0", port=port)
